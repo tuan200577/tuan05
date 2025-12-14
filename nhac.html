@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chúc bé ngủ ngon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #0b1d3a, #1e3c72);
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+    .card {
+      text-align: center;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      padding: 28px 22px;
+      border-radius: 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+      max-width: 340px;
+      animation: fadeIn 2s ease;
+      z-index: 2;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    #lyrics {
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 90px;
+      margin: 18px 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    button {
+      border: none;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: #ffd166;
+      color: #333;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+    button:hover { transform: scale(1.05); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* sao */
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 3s infinite ease-in-out;
+      z-index: 1;
+    }
+    @keyframes twinkle {
+      0%,100% { opacity: .3; }
+      50% { opacity: 1; }
+    }
+
+    /* ẩn video, chỉ lấy âm thanh */
+    iframe {
+      width: 1px;
+      height: 1px;
+      opacity: 0.01;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>🌙 Chúc bé ngủ ngon 🌙</h1>
+    <div id="lyrics"></div>
+    <button id="playBtn">▶ Bật nhạc ru ngủ</button>
+  </div>
+
+  <!-- YouTube embed (audio only) -->
+  <iframe
+    id="yt"
+    src="https://www.youtube.com/embed/C702b3-TkxM?autoplay=0&mute=0&playsinline=1"
+    allow="autoplay"
+  ></iframe>
+
+  <script>
+    /* tạo sao nền */
+    for (let i = 0; i < 50; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.top = Math.random() * 100 + 'vh';
+      s.style.animationDelay = Math.random() * 3 + 's';
+      document.body.appendChild(s);
+    }
+
+    /* lời chạy ~30s */
+    const lyrics = [
+      { t: 0,  text: "Ngủ ngoan nhé bé yêu ơi…" },
+      { t: 5,  text: "Đêm nay trăng sáng dịu êm…" },
+      { t: 10, text: "Mẹ ru con vào giấc ngủ…" },
+      { t: 15, text: "Bao yêu thương trong tiếng hát…" },
+      { t: 20, text: "Ngủ ngoan nhé, mơ giấc mơ hiền…" },
+      { t: 26, text: "Mai thức dậy với nụ cười xinh 💖" }
+    ];
+
+    const lyricBox = document.getElementById('lyrics');
+    const playBtn = document.getElementById('playBtn');
+    const iframe = document.getElementById('yt');
+    let started = false;
+
+    function startSong() {
+      if (started) return;
+      started = true;
+
+      /* phát nhạc youtube sau thao tác người dùng */
+      iframe.src = iframe.src.replace('autoplay=0', 'autoplay=1');
+
+      /* chạy lời */
+      lyrics.forEach(line => {
+        setTimeout(() => {
+          lyricBox.style.opacity = 0;
+          setTimeout(() => {
+            lyricBox.innerHTML = line.text;
+            lyricBox.style.opacity = 1;
+          }, 400);
+        }, line.t * 1000);
+      });
+    }
+
+    /* gắn sự kiện an toàn */
+    playBtn.addEventListener('click', startSong);
+  </script>
+</body>
+</html>
